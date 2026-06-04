@@ -35,10 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_bot(settings: Settings) -> Bot:
-    session = AiohttpSession(
-        proxy=settings.telegram_proxy_url,
-        timeout=settings.telegram_connect_timeout,
-    )
+    session = AiohttpSession(timeout=settings.telegram_connect_timeout)
     return Bot(
         token=settings.bot_token,
         session=session,
@@ -83,11 +80,6 @@ async def main() -> None:
     bot = create_bot(settings)
     dp = create_dispatcher(settings)
     register_handlers(dp)
-
-    if settings.telegram_proxy_url:
-        logger.info("Telegram: SOCKS %s", settings.telegram_proxy_url)
-    else:
-        logger.warning("Telegram: прямое подключение (TELEGRAM_PROXY_URL не задан)")
 
     logger.info("Запуск polling (ProxyAPI: %s)", settings.openai_base_url)
     await dp.start_polling(bot)

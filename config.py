@@ -15,7 +15,6 @@ DEFAULT_CHAT_MODEL = "gpt-5-mini-2025-08-07"
 DEFAULT_IMAGE_MODEL = "gpt-image-2"
 DEFAULT_IMAGE_SIZE = "1024x1024"
 DEFAULT_IMAGE_QUALITY = "auto"
-DEFAULT_TELEGRAM_PROXY = "socks5://127.0.0.1:9050"
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -32,10 +31,7 @@ class Settings:
     memory_max_messages: int
     memory_file: Path
     prompts_file: Path
-    telegram_proxy_url: str | None
     telegram_connect_timeout: float
-    telegram_read_timeout: float
-    telegram_write_timeout: float
 
 
 def get_settings() -> Settings:
@@ -51,12 +47,7 @@ def get_settings() -> Settings:
     memory_max_messages = _get_int_env("MEMORY_MAX_MESSAGES", 5)
     memory_file = BASE_DIR / os.getenv("MEMORY_FILE", "chat_memory.json").strip()
     prompts_file = BASE_DIR / os.getenv("PROMPTS_FILE", "prompts.json").strip()
-    telegram_proxy_url = (
-        os.getenv("TELEGRAM_PROXY_URL", DEFAULT_TELEGRAM_PROXY).strip() or None
-    )
     telegram_connect_timeout = _get_float_env("TELEGRAM_CONNECT_TIMEOUT", 30.0)
-    telegram_read_timeout = _get_float_env("TELEGRAM_READ_TIMEOUT", 30.0)
-    telegram_write_timeout = _get_float_env("TELEGRAM_WRITE_TIMEOUT", 30.0)
 
     missing = []
     if not bot_token:
@@ -79,10 +70,7 @@ def get_settings() -> Settings:
         memory_max_messages=memory_max_messages,
         memory_file=memory_file,
         prompts_file=prompts_file,
-        telegram_proxy_url=telegram_proxy_url,
         telegram_connect_timeout=telegram_connect_timeout,
-        telegram_read_timeout=telegram_read_timeout,
-        telegram_write_timeout=telegram_write_timeout,
     )
 
 

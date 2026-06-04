@@ -15,10 +15,3 @@ IMAGE_QUALITY=auto
 MEMORY_MAX_MESSAGES=5
 MEMORY_FILE=chat_memory.json
 PROMPTS_FILE=prompts.json
-
-# Telegram через Tor SOCKS (запустите .\scripts\start-tor.ps1, проверка: .\scripts\check-tor.ps1)
-# Оставьте пустым для прямого подключения без Tor
-TELEGRAM_PROXY_URL=socks5://127.0.0.1:9050
-TELEGRAM_CONNECT_TIMEOUT=30
-TELEGRAM_READ_TIMEOUT=30
-TELEGRAM_WRITE_TIMEOUT=30

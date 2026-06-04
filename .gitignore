@@ -11,13 +11,3 @@ __pycache__/
 .Python
 .idea/
 .vscode/
-
-# Tor daemon / Expert Bundle — только локально (D:\Tor), не в репозиторий
-tor/
-Tor/
-tor.exe
-torrc
-bridges.custom
-bridges.custom.*
-**/tor-data/
-**/tor.log

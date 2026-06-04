@@ -55,8 +55,7 @@ async def handle_text(
     except Exception:
         logger.exception("Неожиданная ошибка")
         await message.answer(
-            "Не удалось получить ответ. Проверьте PROXY_API_KEY, ProxyAPI "
-            "и что Tor слушает :9050 (scripts/check-tor.ps1)."
+            "Не удалось получить ответ. Проверьте PROXY_API_KEY и доступность ProxyAPI."
         )
         return
 
