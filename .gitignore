@@ -1,0 +1,23 @@
+# Секреты и локальные данные
+.env
+chat_memory.json
+*.log
+logs/
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.Python
+.idea/
+.vscode/
+
+# Tor daemon / Expert Bundle — только локально (D:\Tor), не в репозиторий
+tor/
+Tor/
+tor.exe
+torrc
+bridges.custom
+bridges.custom.*
+**/tor-data/
+**/tor.log

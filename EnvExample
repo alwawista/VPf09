@@ -1,0 +1,24 @@
+# Telegram
+BOT_TOKEN=
+
+# ProxyAPI (OpenAI-совместимый шлюз)
+PROXY_API_KEY=
+OPENAI_BASE_URL=https://api.proxyapi.ru/openai/v1
+CHAT_MODEL=gpt-5-mini-2025-08-07
+
+# Генерация изображений (ProxyAPI, /image в боте)
+IMAGE_MODEL=gpt-image-2
+IMAGE_SIZE=1024x1024
+IMAGE_QUALITY=auto
+
+# Память: сколько последних сообщений (user+assistant) хранить в контексте
+MEMORY_MAX_MESSAGES=5
+MEMORY_FILE=chat_memory.json
+PROMPTS_FILE=prompts.json
+
+# Telegram через Tor SOCKS (запустите .\scripts\start-tor.ps1, проверка: .\scripts\check-tor.ps1)
+# Оставьте пустым для прямого подключения без Tor
+TELEGRAM_PROXY_URL=socks5://127.0.0.1:9050
+TELEGRAM_CONNECT_TIMEOUT=30
+TELEGRAM_READ_TIMEOUT=30
+TELEGRAM_WRITE_TIMEOUT=30
