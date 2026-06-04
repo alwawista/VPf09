@@ -28,3 +28,17 @@ python main.py
 - `/chat` — вернуться к обычному диалогу
 
 В `.env`: `IMAGE_MODEL=gpt-image-2` (см. `EnvExample`).
+
+### Обновление тарифов вручную
+
+```powershell
+python scripts/update_proxyapi_pricing.py
+```
+
+## Стоимость запросов
+
+После каждого ответа в чате и после `/image` бот показывает:
+
+- токены ввода/вывода;
+- тариф ProxyAPI из `proxyapi_pricing.json` ([страница тарифов](https://proxyapi.ru/pricing), обновляется при старте);
+- итог в рублях и эквивалент в USD по курсу ЦБ (`CBR_JSON_URL`).

@@ -15,6 +15,13 @@ DEFAULT_CHAT_MODEL = "gpt-5-mini-2025-08-07"
 DEFAULT_IMAGE_MODEL = "gpt-image-2"
 DEFAULT_IMAGE_SIZE = "1024x1024"
 DEFAULT_IMAGE_QUALITY = "auto"
+# Тарифы ProxyAPI, ₽ за 1M токенов (см. https://proxyapi.ru/pricing )
+DEFAULT_CHAT_INPUT_PRICE_RUB_PER_1M = 230.0
+DEFAULT_CHAT_OUTPUT_PRICE_RUB_PER_1M = 1370.0
+DEFAULT_IMAGE_INPUT_PRICE_RUB_PER_1M = 1520.0
+DEFAULT_IMAGE_OUTPUT_PRICE_RUB_PER_1M = 9100.0
+DEFAULT_IMAGE_IMAGE_INPUT_PRICE_RUB_PER_1M = 2430.0
+DEFAULT_CBR_JSON_URL = "https://www.cbr-xml-daily.ru/daily_json.js"
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -32,6 +39,14 @@ class Settings:
     memory_file: Path
     prompts_file: Path
     telegram_connect_timeout: float
+    chat_input_price_rub_per_1m: float
+    chat_output_price_rub_per_1m: float
+    image_input_price_rub_per_1m: float
+    image_output_price_rub_per_1m: float
+    image_image_input_price_rub_per_1m: float
+    cbr_json_url: str
+    pricing_file: Path
+    pricing_fetch_on_start: bool
 
 
 def get_settings() -> Settings:
@@ -48,6 +63,28 @@ def get_settings() -> Settings:
     memory_file = BASE_DIR / os.getenv("MEMORY_FILE", "chat_memory.json").strip()
     prompts_file = BASE_DIR / os.getenv("PROMPTS_FILE", "prompts.json").strip()
     telegram_connect_timeout = _get_float_env("TELEGRAM_CONNECT_TIMEOUT", 30.0)
+    chat_input_price_rub_per_1m = _get_float_env(
+        "CHAT_INPUT_PRICE_RUB_PER_1M", DEFAULT_CHAT_INPUT_PRICE_RUB_PER_1M
+    )
+    chat_output_price_rub_per_1m = _get_float_env(
+        "CHAT_OUTPUT_PRICE_RUB_PER_1M", DEFAULT_CHAT_OUTPUT_PRICE_RUB_PER_1M
+    )
+    image_input_price_rub_per_1m = _get_float_env(
+        "IMAGE_INPUT_PRICE_RUB_PER_1M", DEFAULT_IMAGE_INPUT_PRICE_RUB_PER_1M
+    )
+    image_output_price_rub_per_1m = _get_float_env(
+        "IMAGE_OUTPUT_PRICE_RUB_PER_1M", DEFAULT_IMAGE_OUTPUT_PRICE_RUB_PER_1M
+    )
+    image_image_input_price_rub_per_1m = _get_float_env(
+        "IMAGE_IMAGE_INPUT_PRICE_RUB_PER_1M", DEFAULT_IMAGE_IMAGE_INPUT_PRICE_RUB_PER_1M
+    )
+    cbr_json_url = (
+        os.getenv("CBR_JSON_URL", "").strip() or DEFAULT_CBR_JSON_URL
+    )
+    pricing_file = BASE_DIR / os.getenv(
+        "PRICING_FILE", "proxyapi_pricing.json"
+    ).strip()
+    pricing_fetch_on_start = _get_bool_env("PRICING_FETCH_ON_START", True)
 
     missing = []
     if not bot_token:
@@ -71,7 +108,22 @@ def get_settings() -> Settings:
         memory_file=memory_file,
         prompts_file=prompts_file,
         telegram_connect_timeout=telegram_connect_timeout,
+        chat_input_price_rub_per_1m=chat_input_price_rub_per_1m,
+        chat_output_price_rub_per_1m=chat_output_price_rub_per_1m,
+        image_input_price_rub_per_1m=image_input_price_rub_per_1m,
+        image_output_price_rub_per_1m=image_output_price_rub_per_1m,
+        image_image_input_price_rub_per_1m=image_image_input_price_rub_per_1m,
+        cbr_json_url=cbr_json_url,
+        pricing_file=pricing_file,
+        pricing_fetch_on_start=pricing_fetch_on_start,
     )
+
+
+def _get_bool_env(name: str, default: bool) -> bool:
+    value = os.getenv(name, "").strip().lower()
+    if not value:
+        return default
+    return value in {"1", "true", "yes", "on"}
 
 
 def _get_int_env(name: str, default: int) -> int:

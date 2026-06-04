@@ -1,0 +1,70 @@
+{
+  "source": "https://proxyapi.ru/pricing",
+  "fetched_at": "2026-06-04T13:31:07.163574+00:00",
+  "currency": "RUB",
+  "unit": "per_1M_tokens",
+  "models": {
+    "claude-opus-4-8": {
+      "input_rub_per_1m": 1516.0,
+      "output_rub_per_1m": 7579.0,
+      "cache_read_rub_per_1m": 152.0
+    },
+    "gemini-3.5-flash": {
+      "input_rub_per_1m": 455.0,
+      "output_rub_per_1m": 2730.0,
+      "cache_read_rub_per_1m": 45.0
+    },
+    "gemini-3.1-flash-lite": {
+      "input_rub_per_1m": 76.0,
+      "output_rub_per_1m": 455.0,
+      "cache_read_rub_per_1m": 7.0
+    },
+    "gpt-5.5": {
+      "input_rub_per_1m": 1520.0,
+      "output_rub_per_1m": 9100.0,
+      "cache_read_rub_per_1m": 152.0
+    },
+    "gpt-5.5-pro": {
+      "input_rub_per_1m": 4740.0,
+      "output_rub_per_1m": 28400.0
+    },
+    "gpt-image-2": {
+      "input_rub_per_1m": 1520.0,
+      "output_rub_per_1m": 9100.0,
+      "image_input_rub_per_1m": 2430.0
+    },
+    "claude-opus-4-7": {
+      "input_rub_per_1m": 1516.0,
+      "output_rub_per_1m": 7579.0,
+      "cache_read_rub_per_1m": 152.0
+    },
+    "gpt-5.4-mini": {
+      "input_rub_per_1m": 230.0,
+      "output_rub_per_1m": 1370.0,
+      "cache_read_rub_per_1m": 23.0
+    },
+    "gpt-5.4-nano": {
+      "input_rub_per_1m": 61.0,
+      "output_rub_per_1m": 380.0,
+      "cache_read_rub_per_1m": 6.0
+    },
+    "gpt-5.3-chat-latest": {
+      "input_rub_per_1m": 530.0,
+      "output_rub_per_1m": 4240.0,
+      "cache_read_rub_per_1m": 53.0
+    },
+    "gpt-5.4": {
+      "input_rub_per_1m": 760.0,
+      "output_rub_per_1m": 4550.0,
+      "cache_read_rub_per_1m": 76.0
+    },
+    "gpt-5.4-pro": {
+      "input_rub_per_1m": 4740.0,
+      "output_rub_per_1m": 28400.0
+    }
+  },
+  "aliases": {
+    "gpt-5-mini-2025-08-07": "gpt-5.4-mini",
+    "gpt-5-mini": "gpt-5.4-mini"
+  }
+}

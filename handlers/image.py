@@ -75,10 +75,13 @@ async def _generate_and_send(
         )
         return
 
-    caption = f"<b>Промпт:</b> {prompt[:500]}"
-    if result.usage_summary:
-        caption += f"\n\n{result.usage_summary}"
+    caption = f"<b>Промпт:</b> {prompt[:400]}"
+    if len(prompt) > 400:
+        caption += "…"
 
     photo = BufferedInputFile(result.image_bytes, filename="generated.png")
     await message.answer_photo(photo, caption=caption)
     await status.delete()
+
+    if result.cost_footer:
+        await message.answer(result.cost_footer)

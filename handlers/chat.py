@@ -47,7 +47,7 @@ async def handle_text(
     await message.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
 
     try:
-        answer = await openai_service.complete(mode_id, history, user_text)
+        result = await openai_service.complete(mode_id, history, user_text)
     except RuntimeError as exc:
         logger.exception("Ошибка при запросе к LLM")
         await message.answer(str(exc))
@@ -59,10 +59,13 @@ async def handle_text(
         )
         return
 
-    memory.add_exchange(chat_id, user_text, answer)
+    memory.add_exchange(chat_id, user_text, result.text)
 
-    for chunk in _split_message(answer):
+    for chunk in _split_message(result.text):
         await message.answer(chunk)
+
+    if result.cost_footer:
+        await message.answer(result.cost_footer)
 
 
 def _split_message(text: str, limit: int = 3900) -> list[str]:

@@ -10,6 +10,7 @@ from typing import Any
 from openai import APIStatusError, AsyncOpenAI
 
 from config import Settings
+from utils.cost_calculator import CostCalculator
 
 logger = logging.getLogger(__name__)
 
@@ -17,12 +18,17 @@ logger = logging.getLogger(__name__)
 @dataclass(frozen=True)
 class ImageGenerationResult:
     image_bytes: bytes
-    usage_summary: str
+    cost_footer: str
 
 
 class ImageGenerationService:
-    def __init__(self, settings: Settings) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        cost_calculator: CostCalculator,
+    ) -> None:
         self._settings = settings
+        self._cost = cost_calculator
         self._client = AsyncOpenAI(
             api_key=settings.proxy_api_key,
             base_url=settings.openai_base_url,
@@ -51,11 +57,18 @@ class ImageGenerationService:
             ) from exc
 
         image_bytes = _extract_image_bytes(response)
-        usage_summary = _format_usage(getattr(response, "usage", None))
+
+        cost_footer = ""
+        try:
+            breakdown = await self._cost.from_image_usage(response.usage)
+            cost_footer = await self._cost.format_footer(breakdown)
+        except Exception:
+            logger.exception("Не удалось рассчитать стоимость image-запроса")
+
         logger.info("Изображение получено: %d байт", len(image_bytes))
         return ImageGenerationResult(
             image_bytes=image_bytes,
-            usage_summary=usage_summary,
+            cost_footer=cost_footer,
         )
 
 
@@ -73,35 +86,3 @@ def _extract_image_bytes(response: Any) -> bytes:
         )
 
     raise RuntimeError("Не удалось извлечь изображение из ответа API.")
-
-
-def _format_usage(usage: Any) -> str:
-    if usage is None:
-        return ""
-
-    parts: list[str] = []
-    mapping = (
-        ("input_tokens", "ввод"),
-        ("output_tokens", "вывод"),
-        ("total_tokens", "всего"),
-        ("input_tokens_details", None),
-    )
-    for field, label in mapping:
-        if label is None:
-            continue
-        value = getattr(usage, field, None)
-        if value is not None:
-            parts.append(f"{label}: {value}")
-
-    details = getattr(usage, "input_tokens_details", None)
-    if details is not None:
-        text_tokens = getattr(details, "text_tokens", None)
-        image_tokens = getattr(details, "image_tokens", None)
-        if text_tokens is not None:
-            parts.append(f"текст (ввод): {text_tokens}")
-        if image_tokens is not None:
-            parts.append(f"изображение (ввод): {image_tokens}")
-
-    if not parts:
-        return ""
-    return "Токены: " + ", ".join(parts)
